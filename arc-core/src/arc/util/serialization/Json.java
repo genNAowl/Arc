@@ -35,7 +35,7 @@ public class Json{
     private boolean usePrototypes = true;
     private OutputType outputType;
     private boolean quoteLongValues;
-    private boolean ignoreUnknownFields;
+    private boolean ignoreUnknownFields = true;
     private boolean ignoreDeprecated;
     private boolean readDeprecated;
     private boolean enumNames = true;
@@ -54,8 +54,7 @@ public class Json{
     }
 
     /**
-     * When true, fields in the JSON that are not found on the class will not throw a {@link SerializationException}. Default is
-     * false.
+     * When true, fields in the JSON that are not found on the class will not throw a {@link SerializationException}. Default is true.
      */
     public void setIgnoreUnknownFields(boolean ignoreUnknownFields){
         this.ignoreUnknownFields = ignoreUnknownFields;
@@ -507,9 +506,9 @@ public class Json{
                 return;
             }
 
-            if(value instanceof Serializable){
+            if(value instanceof JsonSerializable){
                 writeObjectStart(actualType, knownType);
-                ((Serializable)value).write(this);
+                ((JsonSerializable)value).write(this);
                 writeObjectEnd();
                 return;
             }
@@ -1030,8 +1029,8 @@ public class Json{
 
                 Object object = newInstance(type);
 
-                if(object instanceof Serializable){
-                    ((Serializable)object).read(this, jsonData);
+                if(object instanceof JsonSerializable){
+                    ((JsonSerializable)object).read(this, jsonData);
                     return (T)object;
                 }
 
@@ -1092,10 +1091,10 @@ public class Json{
             Serializer serializer = classToSerializer.get(type);
             if(serializer != null) return (T)serializer.read(this, jsonData, type);
 
-            if(Serializable.class.isAssignableFrom(type)){
+            if(JsonSerializable.class.isAssignableFrom(type)){
                 // A Serializable may be read as an array, string, etc, even though it will be written as an object.
                 Object object = newInstance(type);
-                ((Serializable)object).read(this, jsonData);
+                ((JsonSerializable)object).read(this, jsonData);
                 return (T)object;
             }
         }
@@ -1279,13 +1278,11 @@ public class Json{
 
     public interface Serializer<T>{
         void write(Json json, T object, Class knownType);
-
         T read(Json json, JsonValue jsonData, Class type);
     }
 
-    public interface Serializable{
+    public interface JsonSerializable{
         void write(Json json);
-
         void read(Json json, JsonValue jsonData);
     }
 

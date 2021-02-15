@@ -5,6 +5,7 @@ import arc.Graphics.Cursor.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.gl.*;
+import arc.math.*;
 import arc.struct.Seq;
 import arc.util.*;
 import arc.backend.robovm.custom.*;
@@ -19,6 +20,8 @@ import org.robovm.rt.bro.annotation.*;
 
 import java.util.*;
 
+//lots of openGL stuff is deprecated, I don't care about it
+@SuppressWarnings("deprecation")
 public class IOSGraphics extends Graphics{
     private static final String tag = "IOSGraphics";
 
@@ -35,6 +38,7 @@ public class IOSGraphics extends Graphics{
     int fps;
     BufferFormat bufferFormat;
     String extensions;
+    volatile boolean resume = false;
     volatile boolean appPaused;
     IOSApplicationConfiguration config;
     EAGLContext context;
@@ -166,6 +170,7 @@ public class IOSGraphics extends Graphics{
                 listener.resume();
             }
         }
+        resume = true;
     }
 
     public void pause(){
@@ -206,7 +211,13 @@ public class IOSGraphics extends Graphics{
         }
 
         long time = System.nanoTime();
-        deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        if(!resume){
+            deltaTime = (time - lastFrameTime) / 1000000000.0f;
+        }else{
+            resume = false;
+            deltaTime = 0;
+        }
+        if(Mathf.equal(deltaTime, 0f)) deltaTime = 1f / 60f;
         lastFrameTime = time;
 
         frames++;

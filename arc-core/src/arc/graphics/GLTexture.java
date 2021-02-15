@@ -46,7 +46,7 @@ public abstract class GLTexture implements Disposable{
         if(!data.isPrepared()) data.prepare();
 
         final TextureDataType type = data.getType();
-        if(type == TextureDataType.Custom){
+        if(type == TextureDataType.custom){
             data.consumeCustomData(target);
             return;
         }
