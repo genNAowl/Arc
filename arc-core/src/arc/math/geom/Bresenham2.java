@@ -161,6 +161,7 @@ public class Bresenham2{
         output.add(pool.obtain().set(startX, startY));
 
         while(startX != endX || startY != endY){
+
             if(2 * error - yDist > xDist - 2 * error){
                 error += yDist;
                 startX += xStep;

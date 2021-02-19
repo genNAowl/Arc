@@ -20,7 +20,104 @@ public class SDL{
 
     */
 
+    public static final int
+
+    SDL_INIT_TIMER = 0x00000001,
+    SDL_INIT_AUDIO = 0x00000010,
+    SDL_INIT_VIDEO = 0x00000020,
+    SDL_INIT_JOYSTICK = 0x00000200,
+    SDL_INIT_HAPTIC = 0x00001000,
+    SDL_INIT_GAMECONTROLLER = 0x00002000,
+    SDL_INIT_EVENTS = 0x00004000,
+    SDL_INIT_NOPARACHUTE = 0x00100000,
+    SDL_INIT_EVERYTHING = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER,
+
+    SDL_WINDOW_FULLSCREEN = 0x00000001,         /**< fullscreen window */
+    SDL_WINDOW_OPENGL = 0x00000002,             /**< window usable with OpenGL context */
+    SDL_WINDOW_SHOWN = 0x00000004,              /**< window is visible */
+    SDL_WINDOW_HIDDEN = 0x00000008,             /**< window is not visible */
+    SDL_WINDOW_BORDERLESS = 0x00000010,         /**< no window decoration */
+    SDL_WINDOW_RESIZABLE = 0x00000020,          /**< window can be resized */
+    SDL_WINDOW_MINIMIZED = 0x00000040,          /**< window is minimized */
+    SDL_WINDOW_MAXIMIZED = 0x00000080,          /**< window is maximized */
+    SDL_WINDOW_INPUT_GRABBED = 0x00000100,      /**< window has grabbed input focus */
+    SDL_WINDOW_INPUT_FOCUS = 0x00000200,        /**< window has input focus */
+    SDL_WINDOW_MOUSE_FOCUS = 0x00000400,        /**< window has mouse focus */
+    SDL_WINDOW_FULLSCREEN_DESKTOP = (SDL_WINDOW_FULLSCREEN | 0x00001000),
+    SDL_WINDOW_FOREIGN = 0x00000800,            /**< window not created by SDL */
+    SDL_WINDOW_ALLOW_HIGHDPI = 0x00002000,      /**< window should be created in high-DPI mode if supported */
+    SDL_WINDOW_MOUSE_CAPTURE = 0x00004000,       /**< window has mouse captured (unrelated to INPUT_GRABBED) */
+
+    SDL_WINDOWEVENT_NONE = 0,
+    SDL_WINDOWEVENT_SHOWN = 1,
+    SDL_WINDOWEVENT_HIDDEN = 2,
+    SDL_WINDOWEVENT_EXPOSED = 3,
+    SDL_WINDOWEVENT_MOVED = 4,
+    SDL_WINDOWEVENT_RESIZED = 5,
+    SDL_WINDOWEVENT_SIZE_CHANGED = 6,
+    SDL_WINDOWEVENT_MINIMIZED = 7,
+    SDL_WINDOWEVENT_MAXIMIZED = 8,
+    SDL_WINDOWEVENT_RESTORED = 9,
+    SDL_WINDOWEVENT_ENTER = 10,
+    SDL_WINDOWEVENT_LEAVE = 11,
+    SDL_WINDOWEVENT_FOCUS_GAINED = 12,
+    SDL_WINDOWEVENT_FOCUS_LOST = 13,
+    SDL_WINDOWEVENT_CLOSE = 14,
+
+    SDL_SYSTEM_CURSOR_ARROW = 0,
+    SDL_SYSTEM_CURSOR_IBEAM = 1,
+    SDL_SYSTEM_CURSOR_WAIT = 2,
+    SDL_SYSTEM_CURSOR_CROSSHAIR = 3,
+    SDL_SYSTEM_CURSOR_WAITARROW = 4,
+    SDL_SYSTEM_CURSOR_SIZENWSE = 5,
+    SDL_SYSTEM_CURSOR_SIZENESW = 6,
+    SDL_SYSTEM_CURSOR_SIZEWE = 7,
+    SDL_SYSTEM_CURSOR_SIZENS = 8,
+    SDL_SYSTEM_CURSOR_SIZEALL = 9,
+    SDL_SYSTEM_CURSOR_NO = 10,
+    SDL_SYSTEM_CURSOR_HAND = 11,
+    SDL_NUM_SYSTEM_CURSORS = 12,
+
+    SDL_MESSAGEBOX_ERROR = 0x00000010,
+    SDL_MESSAGEBOX_WARNING = 0x00000020,
+    SDL_MESSAGEBOX_INFORMATION = 0x00000040,
+
+    SDL_BUTTON_LEFT = 1,
+    SDL_BUTTON_MIDDLE = 2,
+    SDL_BUTTON_RIGHT = 3,
+    SDL_BUTTON_X1 = 4,
+    SDL_BUTTON_X2 = 5,
+
+    SDL_EVENT_QUIT = 0,
+    SDL_EVENT_WINDOW = 1,
+    SDL_EVENT_MOUSE_MOTION = 2,
+    SDL_EVENT_MOUSE_BUTTON = 3,
+    SDL_EVENT_MOUSE_WHEEL = 4,
+    SDL_EVENT_KEYBOARD = 5,
+    SDL_EVENT_TEXT_INPUT = 6,
+    SDL_EVENT_OTHER = 7,
+
+    SDL_GL_RED_SIZE = 0,
+    SDL_GL_GREEN_SIZE = 1,
+    SDL_GL_BLUE_SIZE = 2,
+    SDL_GL_ALPHA_SIZE = 3,
+    SDL_GL_BUFFER_SIZE = 4,
+    SDL_GL_DOUBLEBUFFER = 5,
+    SDL_GL_DEPTH_SIZE = 6,
+    SDL_GL_STENCIL_SIZE = 7,
+    SDL_GL_CONTEXT_MAJOR_VERSION = 17,
+    SDL_GL_CONTEXT_MINOR_VERSION = 18,
+    SDL_GL_MULTISAMPLEBUFFERS = 13,
+    SDL_GL_MULTISAMPLESAMPLES = 14,
+    SDL_GL_CONTEXT_PROFILE_CORE = 1,
+    SDL_GL_CONTEXT_PROFILE_MASK = 21,
+    SDL_GL_CONTEXT_FLAGS = 20
+
+    ;
+
     static{
+        //TODO remove openal dependency if the natives are ever recompiled
+        //openal is no longer used
         if(OS.isWindows){
             new SharedLibraryLoader(){
                 @Override
@@ -52,18 +149,6 @@ public class SDL{
             }
         }.load("sdl-arc");
     }
-
-    //core SDL methods
-    public static final int
-    SDL_INIT_TIMER = 0x00000001,
-    SDL_INIT_AUDIO = 0x00000010,
-    SDL_INIT_VIDEO = 0x00000020,
-    SDL_INIT_JOYSTICK = 0x00000200,
-    SDL_INIT_HAPTIC = 0x00001000,
-    SDL_INIT_GAMECONTROLLER = 0x00002000,
-    SDL_INIT_EVENTS = 0x00004000,
-    SDL_INIT_NOPARACHUTE = 0x00100000,
-    SDL_INIT_EVERYTHING = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER;
 
     public static native int SDL_Init(int flags); /*
         return SDL_Init(flags);
@@ -100,66 +185,6 @@ public class SDL{
     public static native String SDL_GetClipboardText(); /*
         return env->NewStringUTF(SDL_GetClipboardText());
     */
-
-    //video-related methods
-
-    public static final int
-    SDL_WINDOW_FULLSCREEN = 0x00000001,         /**< fullscreen window */
-    SDL_WINDOW_OPENGL = 0x00000002,             /**< window usable with OpenGL context */
-    SDL_WINDOW_SHOWN = 0x00000004,              /**< window is visible */
-    SDL_WINDOW_HIDDEN = 0x00000008,             /**< window is not visible */
-    SDL_WINDOW_BORDERLESS = 0x00000010,         /**< no window decoration */
-    SDL_WINDOW_RESIZABLE = 0x00000020,          /**< window can be resized */
-    SDL_WINDOW_MINIMIZED = 0x00000040,          /**< window is minimized */
-    SDL_WINDOW_MAXIMIZED = 0x00000080,          /**< window is maximized */
-    SDL_WINDOW_INPUT_GRABBED = 0x00000100,      /**< window has grabbed input focus */
-    SDL_WINDOW_INPUT_FOCUS = 0x00000200,        /**< window has input focus */
-    SDL_WINDOW_MOUSE_FOCUS = 0x00000400,        /**< window has mouse focus */
-    SDL_WINDOW_FULLSCREEN_DESKTOP = (SDL_WINDOW_FULLSCREEN | 0x00001000),
-    SDL_WINDOW_FOREIGN = 0x00000800,            /**< window not created by SDL */
-    SDL_WINDOW_ALLOW_HIGHDPI = 0x00002000,      /**< window should be created in high-DPI mode if supported */
-    SDL_WINDOW_MOUSE_CAPTURE = 0x00004000;       /**< window has mouse captured (unrelated to INPUT_GRABBED) */
-
-    public static final int
-    SDL_WINDOWEVENT_SHOWN = SDL_WINDOWEVENT_SHOWN(),
-    SDL_WINDOWEVENT_HIDDEN = SDL_WINDOWEVENT_HIDDEN(),
-    SDL_WINDOWEVENT_RESIZED = SDL_WINDOWEVENT_RESIZED(),
-    SDL_WINDOWEVENT_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED(),
-    SDL_WINDOWEVENT_MINIMIZED = SDL_WINDOWEVENT_MINIMIZED(),
-    SDL_WINDOWEVENT_MAXIMIZED = SDL_WINDOWEVENT_MAXIMIZED(),
-    SDL_WINDOWEVENT_RESTORED = SDL_WINDOWEVENT_RESTORED();
-
-    private static native int SDL_WINDOWEVENT_SHOWN(); /* return SDL_WINDOWEVENT_SHOWN;*/
-    private static native int SDL_WINDOWEVENT_HIDDEN(); /* return SDL_WINDOWEVENT_HIDDEN;*/
-    private static native int SDL_WINDOWEVENT_RESIZED(); /* return SDL_WINDOWEVENT_RESIZED;*/
-    private static native int SDL_WINDOWEVENT_SIZE_CHANGED(); /* return SDL_WINDOWEVENT_SIZE_CHANGED;*/
-    private static native int SDL_WINDOWEVENT_MINIMIZED(); /* return SDL_WINDOWEVENT_MINIMIZED;*/
-    private static native int SDL_WINDOWEVENT_MAXIMIZED(); /* return SDL_WINDOWEVENT_MAXIMIZED;*/
-    private static native int SDL_WINDOWEVENT_RESTORED(); /* return SDL_WINDOWEVENT_RESTORED;*/
-
-    public static final int
-    SDL_SYSTEM_CURSOR_ARROW = SDL_SYSTEM_CURSOR_ARROW(),
-    SDL_SYSTEM_CURSOR_IBEAM = SDL_SYSTEM_CURSOR_IBEAM(),
-    SDL_SYSTEM_CURSOR_WAIT = SDL_SYSTEM_CURSOR_WAIT(),
-    SDL_SYSTEM_CURSOR_CROSSHAIR = SDL_SYSTEM_CURSOR_CROSSHAIR(),
-    SDL_SYSTEM_CURSOR_WAITARROW = SDL_SYSTEM_CURSOR_WAITARROW(),
-    SDL_SYSTEM_CURSOR_SIZEALL = SDL_SYSTEM_CURSOR_SIZEALL(),
-    SDL_SYSTEM_CURSOR_NO = SDL_SYSTEM_CURSOR_NO(),
-    SDL_SYSTEM_CURSOR_SIZENS = SDL_SYSTEM_CURSOR_SIZENS(),
-    SDL_SYSTEM_CURSOR_SIZEWE = SDL_SYSTEM_CURSOR_SIZEWE(),
-    SDL_SYSTEM_CURSOR_HAND = SDL_SYSTEM_CURSOR_HAND();
-
-    private static native int SDL_SYSTEM_CURSOR_ARROW(); /* return SDL_SYSTEM_CURSOR_ARROW;*/
-    private static native int SDL_SYSTEM_CURSOR_IBEAM(); /* return SDL_SYSTEM_CURSOR_IBEAM;*/
-    private static native int SDL_SYSTEM_CURSOR_WAIT(); /* return SDL_SYSTEM_CURSOR_WAIT;*/
-    private static native int SDL_SYSTEM_CURSOR_CROSSHAIR(); /* return SDL_SYSTEM_CURSOR_CROSSHAIR;*/
-    private static native int SDL_SYSTEM_CURSOR_WAITARROW(); /* return SDL_SYSTEM_CURSOR_WAITARROW;*/
-    private static native int SDL_SYSTEM_CURSOR_SIZEALL(); /* return SDL_SYSTEM_CURSOR_SIZEALL;*/
-    private static native int SDL_SYSTEM_CURSOR_NO(); /* return SDL_SYSTEM_CURSOR_NO;*/
-    private static native int SDL_SYSTEM_CURSOR_SIZENS(); /* return SDL_SYSTEM_CURSOR_SIZENS;*/
-    private static native int SDL_SYSTEM_CURSOR_SIZEWE(); /* return SDL_SYSTEM_CURSOR_SIZEWE;*/
-    private static native int SDL_SYSTEM_CURSOR_HAND(); /* return SDL_SYSTEM_CURSOR_HAND;*/
-
 
     public static native long SDL_CreateWindow(String title, int w, int h, int flags); /*
         return (jlong)SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, flags);
@@ -242,28 +267,6 @@ public class SDL{
         SDL_StopTextInput();
     */
 
-    public static final int
-    SDL_MESSAGEBOX_ERROR = 0x00000010,   /**< error dialog */
-    SDL_MESSAGEBOX_WARNING = 0x00000020,   /**< warning dialog */
-    SDL_MESSAGEBOX_INFORMATION = 0x00000040;    /**< informational dialog */
-
-    public static final int
-    SDL_BUTTON_LEFT = 1,
-    SDL_BUTTON_MIDDLE = 2,
-    SDL_BUTTON_RIGHT = 3,
-    SDL_BUTTON_X1 = 4,
-    SDL_BUTTON_X2 = 5;
-
-    public static final int
-    SDL_EVENT_QUIT = 0,
-    SDL_EVENT_WINDOW = 1,
-    SDL_EVENT_MOUSE_MOTION = 2,
-    SDL_EVENT_MOUSE_BUTTON = 3,
-    SDL_EVENT_MOUSE_WHEEL = 4,
-    SDL_EVENT_KEYBOARD = 5,
-    SDL_EVENT_TEXT_INPUT = 6,
-    SDL_EVENT_OTHER = 7;
-
     /** Since passing in or returning a class here would be a pain, I have to resort to an int array.
      * @return whether or not the event was processed.
      * If true is returned, the input data array is filled with the event data.*/
@@ -325,25 +328,6 @@ public class SDL{
         }
         return 0;
     */
-
-
-    //openGL stuff
-
-    public static final int
-    SDL_GL_RED_SIZE = 0,
-    SDL_GL_GREEN_SIZE = 1,
-    SDL_GL_BLUE_SIZE = 2,
-    SDL_GL_ALPHA_SIZE = 3,
-    SDL_GL_DEPTH_SIZE = 6,
-    SDL_GL_STENCIL_SIZE = 7,
-    SDL_GL_DOUBLEBUFFER = 5,
-    SDL_GL_CONTEXT_MAJOR_VERSION = 17,
-    SDL_GL_CONTEXT_MINOR_VERSION = 18,
-    SDL_GL_MULTISAMPLEBUFFERS = 13,
-    SDL_GL_MULTISAMPLESAMPLES = 14,
-    SDL_GL_CONTEXT_PROFILE_CORE = 1,
-    SDL_GL_CONTEXT_PROFILE_MASK = 21,
-    SDL_GL_CONTEXT_FLAGS = 20;
 
     public static native int SDL_GL_SetAttribute(int attribute, int value); /*
         return SDL_GL_SetAttribute((SDL_GLattr)attribute, value);
